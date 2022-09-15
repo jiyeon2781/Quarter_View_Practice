@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public bool[] hasWeapons;
     public GameObject[] grenades; // 공전하는 물체를 컨트롤하기 위해 배열변수 생성
     public int hasGrenades;
+    public Camera followCamera; // 플레이어에 메인 카메라 변수 생성
 
     public int ammo;
     public int coin;
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
     bool jumpDown;
     bool interDown; // 상호작용
     bool fireDown; // 공격 키 입력
+    bool reloadDown; // 재장전 변수
 
     bool sDown1;
     bool sDown2;
@@ -36,6 +38,7 @@ public class Player : MonoBehaviour
     bool isJump;
     bool isDodge;
     bool isSwap; // 무기 교체 시간차를 위한 플래그
+    bool isReload;
     bool isFireReady = true; // 공격 준비 완료
 
     Vector3 moveVec;
@@ -62,6 +65,7 @@ public class Player : MonoBehaviour
         Turn();
         Jump();
         Attack();
+        Reload();
         Dodge();
         Swap();
         Interaction();
@@ -73,7 +77,8 @@ public class Player : MonoBehaviour
         vAxis = Input.GetAxisRaw("Vertical");
         walkDown = Input.GetButton("Walk"); // 누를때만 작동되도록 함수 사용
         jumpDown = Input.GetButtonDown("Jump");
-        fireDown = Input.GetButtonDown("Fire1");
+        fireDown = Input.GetButton("Fire1");
+        reloadDown = Input.GetButtonDown("Reload");
         interDown = Input.GetButtonDown("Interaction");
         sDown1 = Input.GetButtonDown("Swap1");
         sDown2 = Input.GetButtonDown("Swap2");
@@ -86,7 +91,7 @@ public class Player : MonoBehaviour
 
         if (isDodge) moveVec = dodgeVec;
         // 회피 중에는 움직임 벡터 -> 회피방향 벡터로 바뀌도록 구현
-        if (isSwap || !isFireReady) moveVec = Vector3.zero;
+        if (isSwap || !isFireReady || isReload) moveVec = Vector3.zero;
 
         transform.position += moveVec * speed * (walkDown ? 0.3f : 1f) * Time.deltaTime; // 이동은 꼭 deltaTime 추가
 
@@ -96,7 +101,22 @@ public class Player : MonoBehaviour
 
     void Turn()
     {
+        // 1. 키보드에 의한 회전
         transform.LookAt(transform.position + moveVec);
+
+        // 2. 마우스에 의한 회전
+        if (fireDown)
+        {
+            Ray ray = followCamera.ScreenPointToRay(Input.mousePosition); // 스크린에서 월드로 Ray를 쏘는 함수
+            RaycastHit rayHit; // RaycastHit 정보를 저장할 변수
+            if (Physics.Raycast(ray, out rayHit, 100)) // out : return 처럼 반환값을 주어진 변수에 저장하는 키워드
+            {
+                // RayCaseHit의 마우스 클릭 위치를 활용해 회전을 구현
+                Vector3 nextVec = rayHit.point - transform.position;
+                nextVec.y = 0; // RayCastHit의 높이는 무시하도록 y축 값을 0으로 초기화
+                transform.LookAt(transform.position + nextVec);
+            }
+        }
     }
 
     void Jump()
@@ -119,9 +139,31 @@ public class Player : MonoBehaviour
         if (fireDown && isFireReady && !isDodge && !isSwap)
         {
             equipWeapon.Use();
-            anim.SetTrigger("doSwing");
+            anim.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");
             fireDelay = 0; // 공격 딜레이를 0으로 돌려 다음 공격까지 기다리도록 작성
-        } 
+        }
+    }
+
+    void Reload()
+    {
+        if (equipWeapon == null) return; //손에 들린 무기가 없을 때
+        if (equipWeapon.type == Weapon.Type.Melee) return; // 근접무기 일때
+        if (ammo == 0) return; // 플레이어의 총알이 1개도 없을 때
+
+        if (reloadDown && !isJump && !isDodge && !isSwap && isFireReady)
+        {
+            anim.SetTrigger("doReload");
+            isReload = true;
+            Invoke("ReloadOut", 3f);
+        }
+    }
+
+    void ReloadOut()
+    {
+        int reAmmo = ammo < equipWeapon.maxAmmo ? ammo : equipWeapon.maxAmmo;// 플레이어가 소지한 탄을 고려해서 계산
+        equipWeapon.curAmmo = reAmmo; // 무기에 탄이 들어감
+        ammo -= reAmmo; // 들어간 개수만큼 플레이어가 소지한 탄을 빼줌
+        isReload = false;
     }
 
     void Dodge()
