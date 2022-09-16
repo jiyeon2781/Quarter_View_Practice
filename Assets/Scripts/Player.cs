@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
     bool isSwap; // 무기 교체 시간차를 위한 플래그
     bool isReload;
     bool isFireReady = true; // 공격 준비 완료
+    bool isBorder; // 벽 충돌 플래그
 
     Vector3 moveVec;
     Vector3 dodgeVec;
@@ -93,7 +94,8 @@ public class Player : MonoBehaviour
         // 회피 중에는 움직임 벡터 -> 회피방향 벡터로 바뀌도록 구현
         if (isSwap || !isFireReady || isReload) moveVec = Vector3.zero;
 
-        transform.position += moveVec * speed * (walkDown ? 0.3f : 1f) * Time.deltaTime; // 이동은 꼭 deltaTime 추가
+        if (!isBorder) transform.position += moveVec * speed * (walkDown ? 0.3f : 1f) * Time.deltaTime; // 이동은 꼭 deltaTime 추가
+        // 이동 제한 조건 (벽에 닿지 않았을 때)
 
         anim.SetBool("IsRun", moveVec != Vector3.zero); // 파라미터 값 설정
         anim.SetBool("IsWalk", walkDown);
@@ -267,6 +269,24 @@ public class Player : MonoBehaviour
             }
             Destroy(other.gameObject);
         }
+    }
+
+    void FreezeRotation() // 플레이어 자동 회전 방지
+    {
+        rigid.angularVelocity = Vector3.zero; // 물리 회전 속도
+    }
+
+    void StopToWall()
+    {
+        Debug.DrawRay(transform.position, transform.forward * 5, Color.green); // Scene 내에서 Ray를 보여주는 함수
+        isBorder = Physics.Raycast(transform.position, transform.forward, 5, LayerMask.GetMask("Wall")); // Ray를 쏘아 닿는 오브젝트를 감지하는 함수
+
+    }
+
+    void FixedUpdate()
+    {
+        FreezeRotation();
+        StopToWall();
     }
 
     void OnTriggerStay(Collider other)
