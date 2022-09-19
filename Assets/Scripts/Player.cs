@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public bool[] hasWeapons;
     public GameObject[] grenades; // 공전하는 물체를 컨트롤하기 위해 배열변수 생성
     public int hasGrenades;
+    public GameObject grenadeObject; // 수류탄 프리펩 저장할 변수 추가
     public Camera followCamera; // 플레이어에 메인 카메라 변수 생성
 
     public int ammo;
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     bool jumpDown;
     bool interDown; // 상호작용
     bool fireDown; // 공격 키 입력
+    bool grenadeDown; 
     bool reloadDown; // 재장전 변수
 
     bool sDown1;
@@ -65,6 +67,7 @@ public class Player : MonoBehaviour
         Move();
         Turn();
         Jump();
+        Grenade();
         Attack();
         Reload();
         Dodge();
@@ -79,6 +82,7 @@ public class Player : MonoBehaviour
         walkDown = Input.GetButton("Walk"); // 누를때만 작동되도록 함수 사용
         jumpDown = Input.GetButtonDown("Jump");
         fireDown = Input.GetButton("Fire1");
+        grenadeDown = Input.GetButtonDown("Fire2");
         reloadDown = Input.GetButtonDown("Reload");
         interDown = Input.GetButtonDown("Interaction");
         sDown1 = Input.GetButtonDown("Swap1");
@@ -129,6 +133,35 @@ public class Player : MonoBehaviour
             anim.SetBool("isJump", true);
             anim.SetTrigger("doJump");
             isJump = true; // 무한 점프를 막기 위해 제약 조건 필요
+        }
+    }
+
+    void Grenade()
+    {
+        if (hasGrenades == 0) return;
+        if (grenadeDown && !isReload && !isSwap)
+        {
+
+            // 마우스 위치에 바로 던질 수 있도록 RayCast 사용
+            Ray ray = followCamera.ScreenPointToRay(Input.mousePosition); // 스크린에서 월드로 Ray를 쏘는 함수
+            RaycastHit rayHit; // RaycastHit 정보를 저장할 변수
+            if (Physics.Raycast(ray, out rayHit, 100)) // out : return 처럼 반환값을 주어진 변수에 저장하는 키워드
+            {
+                // RayCaseHit의 마우스 클릭 위치를 활용해 회전을 구현
+                Vector3 nextVec = rayHit.point - transform.position;
+                nextVec.y = 10; // RayCastHit의 높이는 무시하도록 y축 값을 0으로 초기화
+
+                // 생성된 수류탄의 리지드바디를 활용해 던지는 로직
+                GameObject instantGrenade = Instantiate(grenadeObject, transform.position, transform.rotation);
+                Rigidbody rigidGrenade = instantGrenade.GetComponent<Rigidbody>();
+                rigidGrenade.AddForce(nextVec, ForceMode.Impulse);
+                rigidGrenade.AddTorque(Vector3.back * 10, ForceMode.Impulse);
+                // 수류탄을 던짐
+
+                hasGrenades--;
+                grenades[hasGrenades].SetActive(false);
+
+            }
         }
     }
 
