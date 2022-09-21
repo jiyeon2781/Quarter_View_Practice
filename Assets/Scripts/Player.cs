@@ -43,12 +43,14 @@ public class Player : MonoBehaviour
     bool isReload;
     bool isFireReady = true; // 공격 준비 완료
     bool isBorder; // 벽 충돌 플래그
+    bool isDamage; // 무적타임을 위한 bool qustn
 
     Vector3 moveVec;
     Vector3 dodgeVec;
 
     Rigidbody rigid; // 물리효과를 위한 선언
     Animator anim;
+    MeshRenderer[] meshs;
 
     GameObject nearObject;
     Weapon equipWeapon;
@@ -59,6 +61,7 @@ public class Player : MonoBehaviour
     {
         anim = GetComponentInChildren<Animator>();
         rigid = GetComponent<Rigidbody>();
+        meshs = GetComponentsInChildren<MeshRenderer>(); // 여러개를 가져옴
     }
 
     void Update()
@@ -302,7 +305,34 @@ public class Player : MonoBehaviour
             }
             Destroy(other.gameObject);
         }
+        else if (other.tag == "EnemyBullet")
+        {
+            if (!isDamage)
+            {
+                Bullet enemyBullet = other.GetComponent<Bullet>(); // Bullet 스크립트 재활용 -> 데미지 적용
+                health -= enemyBullet.damage;
+                if (other.GetComponent<Rigidbody>() != null) Destroy(other.gameObject);
+                StartCoroutine(OnDamage());
+            }
+        }
     }
+
+    IEnumerator OnDamage()
+    {
+        isDamage = true; // 무적상태가 됨
+        foreach(MeshRenderer mesh in meshs)
+        {
+            // 모든 재질의 색상 변경
+            mesh.material.color = Color.yellow;
+        }
+        yield return new WaitForSeconds(1f);
+        isDamage = false; // 해제
+        foreach (MeshRenderer mesh in meshs)
+        {
+            mesh.material.color = Color.white;
+        }
+    }
+    
 
     void FreezeRotation() // 플레이어 자동 회전 방지
     {
