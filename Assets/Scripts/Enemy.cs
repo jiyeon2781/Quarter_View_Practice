@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
-    public enum Type { A, B, C }; // 적 타입
+    public enum Type { A, B, C, D }; // 적 타입
     public Type enemyType; // 적 타입을 저장할 변수
     public int maxHealth;
     public int curHealth;
@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
 
     Rigidbody rigid;
     BoxCollider boxCollider;
-    Material mat;
+    MeshRenderer[] meshs; // 피격 이펙트 플레이어처럼 모든 메테리얼로 변경
     NavMeshAgent nav;
     Animator anim;
 
@@ -25,11 +25,12 @@ public class Enemy : MonoBehaviour
     {
         rigid = GetComponent<Rigidbody>();
         boxCollider = GetComponent<BoxCollider>();
-        mat = GetComponentInChildren<MeshRenderer>().material; 
+        meshs = GetComponentsInChildren<MeshRenderer>(); 
         // material은 Mesh Renderer 컴포넌트에서 접근가능
         nav = GetComponent<NavMeshAgent>();
         anim = GetComponentInChildren<Animator>();
-        Invoke("ChaseStart",2);
+
+        if (enemyType != Type.D) Invoke("ChaseStart",2);
     }
     void ChaseStart()
     {
@@ -38,7 +39,7 @@ public class Enemy : MonoBehaviour
     }
     void Update()
     {
-        if (nav.enabled)
+        if (nav.enabled && enemyType != Type.D)
         {
             nav.SetDestination(target.position);
             nav.isStopped = !isChase;
@@ -57,31 +58,35 @@ public class Enemy : MonoBehaviour
 
     void Targeting()
     {
-        float targetRadius = 0f; // 공격 두께
-        float targetRange = 0f; // 공격 범위
-
-        switch (enemyType)
+        if (enemyType != Type.D)
         {
-            case Type.A:
-                targetRadius = 1.5f;
-                targetRange = 3f;
-                break;
-            case Type.B:
-                targetRadius = 1f;
-                targetRange = 12f;
-                break;
-            case Type.C:
-                targetRadius = 0.5f;
-                targetRange = 25f;
-                break;
-        }
+            float targetRadius = 0f; // 공격 두께
+            float targetRange = 0f; // 공격 범위
 
-        RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius,
-            transform.forward, targetRange, LayerMask.GetMask("Player"));
-        if (rayHits.Length > 0 && !isAttack) // 플레이어가 잡히고, 공격을 하지 않을때 공격 코루틴 실행
-        {
-            StartCoroutine(Attack());
+            switch (enemyType)
+            {
+                case Type.A:
+                    targetRadius = 1.5f;
+                    targetRange = 3f;
+                    break;
+                case Type.B:
+                    targetRadius = 1f;
+                    targetRange = 12f;
+                    break;
+                case Type.C:
+                    targetRadius = 0.5f;
+                    targetRange = 25f;
+                    break;
+            }
+
+            RaycastHit[] rayHits = Physics.SphereCastAll(transform.position, targetRadius,
+                transform.forward, targetRange, LayerMask.GetMask("Player"));
+            if (rayHits.Length > 0 && !isAttack) // 플레이어가 잡히고, 공격을 하지 않을때 공격 코루틴 실행
+            {
+                StartCoroutine(Attack());
+            }
         }
+        
     }
 
     IEnumerator Attack()
@@ -167,16 +172,19 @@ public class Enemy : MonoBehaviour
     IEnumerator OnDamage(Vector3 reactVec , bool isGrenade) 
         // 로직 담을 코루틴 생성, 수류탄의 리액션을 위해 bool 매개변수 추가
     {
-        mat.color = Color.red;
+        foreach(MeshRenderer mesh in meshs)
+            mesh.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
 
         if (curHealth > 0)
         {
-            mat.color = Color.white;
+            foreach (MeshRenderer mesh in meshs)
+                mesh.material.color = Color.white;
         }
         else
         {
-            mat.color = Color.gray;
+            foreach (MeshRenderer mesh in meshs)
+                mesh.material.color = Color.grey;
             gameObject.layer = 12; // 레이어 번호 그대로 적용
             isChase = false;
             nav.enabled = false; // 사망 리액션을 유지하기 위해 NavAgent 비활성
@@ -198,8 +206,7 @@ public class Enemy : MonoBehaviour
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse); // 넉백 구현
             }
             
-
-            Destroy(gameObject, 4);
+            if (enemyType != Type.D) Destroy(gameObject, 4);
         }
     }
 }
