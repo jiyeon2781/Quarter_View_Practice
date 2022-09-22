@@ -311,13 +311,15 @@ public class Player : MonoBehaviour
             {
                 Bullet enemyBullet = other.GetComponent<Bullet>(); // Bullet 스크립트 재활용 -> 데미지 적용
                 health -= enemyBullet.damage;
-                if (other.GetComponent<Rigidbody>() != null) Destroy(other.gameObject);
-                StartCoroutine(OnDamage());
+
+                bool isBossAttack = other.name == "Boss Melee Area";// 보스 근접공격 오브젝트 이름으로 보스 공격 인지
+                StartCoroutine(OnDamage(isBossAttack));
             }
+            if (other.GetComponent<Rigidbody>() != null) Destroy(other.gameObject);
         }
     }
 
-    IEnumerator OnDamage()
+    IEnumerator OnDamage(bool isBossAttack)
     {
         isDamage = true; // 무적상태가 됨
         foreach(MeshRenderer mesh in meshs)
@@ -325,12 +327,17 @@ public class Player : MonoBehaviour
             // 모든 재질의 색상 변경
             mesh.material.color = Color.yellow;
         }
+
+        if (isBossAttack) rigid.AddForce(transform.forward * -25, ForceMode.Impulse);
+
         yield return new WaitForSeconds(1f);
         isDamage = false; // 해제
         foreach (MeshRenderer mesh in meshs)
         {
             mesh.material.color = Color.white;
         }
+
+        if (isBossAttack) rigid.velocity = Vector3.zero;
     }
     
 

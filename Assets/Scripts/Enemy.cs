@@ -13,13 +13,14 @@ public class Enemy : MonoBehaviour
     public BoxCollider meleeArea; // 콜라이더 담을 변수 추가
     public GameObject bullet; // C타입에서 사용할 오브젝트
     public bool isChase; // 추적 결정
-    public bool isAttack; 
+    public bool isAttack;
+    public bool isDead;
 
-    Rigidbody rigid;
-    BoxCollider boxCollider;
-    MeshRenderer[] meshs; // 피격 이펙트 플레이어처럼 모든 메테리얼로 변경
-    NavMeshAgent nav;
-    Animator anim;
+    public Rigidbody rigid;
+    public BoxCollider boxCollider;
+    public MeshRenderer[] meshs; // 피격 이펙트 플레이어처럼 모든 메테리얼로 변경
+    public NavMeshAgent nav;
+    public Animator anim;
 
     void Awake()
     {
@@ -58,7 +59,7 @@ public class Enemy : MonoBehaviour
 
     void Targeting()
     {
-        if (enemyType != Type.D)
+        if (!isDead && enemyType != Type.D)
         {
             float targetRadius = 0f; // 공격 두께
             float targetRange = 0f; // 공격 범위
@@ -186,6 +187,7 @@ public class Enemy : MonoBehaviour
             foreach (MeshRenderer mesh in meshs)
                 mesh.material.color = Color.grey;
             gameObject.layer = 12; // 레이어 번호 그대로 적용
+            isDead = true;
             isChase = false;
             nav.enabled = false; // 사망 리액션을 유지하기 위해 NavAgent 비활성
             anim.SetTrigger("doDie");
