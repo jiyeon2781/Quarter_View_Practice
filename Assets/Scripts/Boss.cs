@@ -33,7 +33,6 @@ public class Boss : Enemy
         if (isDead)
         {
             StopAllCoroutines();
-            transform.position = Vector3.zero;
             return;
         }
 
