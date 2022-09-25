@@ -43,7 +43,8 @@ public class Player : MonoBehaviour
     bool isReload;
     bool isFireReady = true; // 공격 준비 완료
     bool isBorder; // 벽 충돌 플래그
-    bool isDamage; // 무적타임을 위한 bool qustn
+    bool isDamage; // 무적타임을 위한 bool 변수
+    bool isShop; // 쇼핑중일 때
 
     Vector3 moveVec;
     Vector3 dodgeVec;
@@ -174,7 +175,7 @@ public class Player : MonoBehaviour
         fireDelay += Time.deltaTime; // 공격 딜레이에 시간을 더해주고 공격 가능 여부 확인
         isFireReady = equipWeapon.rate < fireDelay;
 
-        if (fireDown && isFireReady && !isDodge && !isSwap)
+        if (fireDown && isFireReady && !isDodge && !isSwap && !isShop)
         {
             equipWeapon.Use();
             anim.SetTrigger(equipWeapon.type == Weapon.Type.Melee ? "doSwing" : "doShot");
@@ -188,7 +189,7 @@ public class Player : MonoBehaviour
         if (equipWeapon.type == Weapon.Type.Melee) return; // 근접무기 일때
         if (ammo == 0) return; // 플레이어의 총알이 1개도 없을 때
 
-        if (reloadDown && !isJump && !isDodge && !isSwap && isFireReady)
+        if (reloadDown && !isJump && !isDodge && !isSwap && isFireReady && !isShop)
         {
             anim.SetTrigger("doReload");
             isReload = true;
@@ -206,7 +207,7 @@ public class Player : MonoBehaviour
 
     void Dodge()
     {
-        if (jumpDown && moveVec != Vector3.zero && !isJump && !isDodge)
+        if (jumpDown && moveVec != Vector3.zero && !isJump && !isDodge && !isShop)
         {
             dodgeVec = moveVec;
             speed *= 2; // 회피는 이동속도 2배로 상승하도록 설정
@@ -235,7 +236,7 @@ public class Player : MonoBehaviour
         if (sDown2) weaponIndex = 1;
         if (sDown3) weaponIndex = 2;
 
-        if ((sDown1 || sDown2 || sDown3) && !isJump && !isDodge)
+        if ((sDown1 || sDown2 || sDown3) && !isJump && !isDodge && !isShop)
         {
             if (equipWeapon != null) equipWeapon.gameObject.SetActive(false); // 빈손일때 실행 X
             equipWeaponIndex = weaponIndex;
@@ -264,6 +265,12 @@ public class Player : MonoBehaviour
                 hasWeapons[weaponIndex] = true; // 아이템 정보를 가져와 해당 무기 입수 체크
 
                 Destroy(nearObject);
+            }
+            else if (nearObject.tag == "Shop")
+            {
+                Shop shop = nearObject.GetComponent<Shop>();
+                shop.Enter(this);
+                isShop = true;
             }
         }
     }
@@ -361,11 +368,19 @@ public class Player : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Weapon") nearObject = other.gameObject;
+        if (other.tag == "Weapon" || other.tag == "Shop") nearObject = other.gameObject;
     }
 
     void OnTriggerExit(Collider other)
     {
         if (other.tag == "Weapon") nearObject = null;
+        else if (other.tag == "Shop")
+        {
+            Shop shop = nearObject.GetComponent<Shop>();
+            shop.Exit();
+            isShop = false;
+            nearObject = null;
+
+        }
     }
 }

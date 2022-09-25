@@ -295,7 +295,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 2,500
+  m_Text: 5,000
 --- !u!222 &75580990
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1067,7 +1067,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 266091448}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 827595112}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &266091448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1261,8 +1273,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC5B4\uC774 \uC790\uB124, \uBB3C\uC790\uAC00 \uBD80\uC871\uD558\uC9C0
-    \uC54A\uB294\uAC00?"
+  m_Text: "\uAD70\uCE68\uC774 \uC0E5\uB3C4\uB294 \uBB34\uAE30"
 --- !u!222 &291753566
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1343,6 +1354,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f395b71eba462854fab915e2d7797b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiGroup: {fileID: 518970763}
+  anim: {fileID: 300793101}
+  itemObject:
+  - {fileID: 1976377034835715598, guid: 9eedee2fe5204e44fa8620d0e80ababd, type: 3}
+  - {fileID: 2573770659305896133, guid: 8625270ac72bd824580d0aa437409741, type: 3}
+  - {fileID: 1195657818893059686, guid: 24095bf390515fe4687a6c67cf58af07, type: 3}
+  itemPrice: f4010000b80b000088130000
+  itemPos:
+  - {fileID: 2062393951}
+  - {fileID: 1075659945}
+  - {fileID: 1220461779}
+  talkData:
+  - "\uAD70\uCE68\uC774 \uC0E5\uB3C4\uB294 \uBB34\uAE30"
+  - "\uB3C8\uC774 \uC5C6\uC5B4\uC11C \uAD70\uCE68\uC774 \uC3D9 \uB4E4\uC5B4\uAC14\uC5B4"
+  talkText: {fileID: 0}
 --- !u!135 &327343391
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -6394,7 +6420,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD0C4 \uC57D"
+  m_Text: "\uD578\uB4DC\uAC74"
 --- !u!222 &365220569
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12132,7 +12158,7 @@ GameObject:
   - component: {fileID: 518970765}
   - component: {fileID: 518970764}
   m_Layer: 5
-  m_Name: Item Shop Group (1)
+  m_Name: Weapon Shop Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12161,7 +12187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1000}
+  m_AnchoredPosition: {x: 0, y: -1555}
   m_SizeDelta: {x: 1000, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &518970764
@@ -12177,7 +12203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8490566, g: 0.46057317, b: 0.62272274, a: 1}
+  m_Color: {r: 0.45882353, g: 0.6764347, b: 0.8509804, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -12640,7 +12666,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 3cadcd247345c2649b0e8fbd9ee6e8db, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1c436558df0caa04eb65bf6f8d065918, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12989,7 +13015,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1,200
+  m_Text: 3,000
 --- !u!222 &670548639
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13069,8 +13095,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uC5B4\uC774 \uC790\uB124, \uBB3C\uC790\uAC00 \uBD80\uC871\uD558\uC9C0
-    \uC54A\uB294\uAC00?"
+  m_Text: "\uBC14\uAC00\uC9C0 \uC544\uB2D8\uB2E4!"
 --- !u!222 &675589881
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14069,6 +14094,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f395b71eba462854fab915e2d7797b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiGroup: {fileID: 1433914770}
+  anim: {fileID: 769312758}
+  itemObject:
+  - {fileID: 1006356300108155345, guid: 11d44be364707f34eb6d0eca1d077767, type: 3}
+  - {fileID: 8955638816747392505, guid: d967af98b682b624a9a4dd80b90547c9, type: 3}
+  - {fileID: 1858950731765758513, guid: ffb5f726870ca0b449214352b518669f, type: 3}
+  itemPrice: e8030000b0040000c4090000
+  itemPos:
+  - {fileID: 1819922345}
+  - {fileID: 1065483812}
+  - {fileID: 175809977}
+  talkData:
+  - "\uBC14\uAC00\uC9C0 \uC544\uB2D8\uB2E4!"
+  - "\uB3C8\uC774 \uC5C6\uC5B4..? \uB3CC\uC544\uAC00."
+  talkText: {fileID: 675589880}
 --- !u!135 &827595113
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -18997,10 +19037,10 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 0.6650944, b: 0.8057547, a: 1}
+    m_NormalColor: {r: 0.5990566, g: 0.81957555, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.5921569, g: 0.35686275, b: 0.52156866, a: 1}
-    m_SelectedColor: {r: 0.5921569, g: 0.35686275, b: 0.52156866, a: 1}
+    m_PressedColor: {r: 0.31764707, g: 0.5254902, b: 0.7137255, a: 1}
+    m_SelectedColor: {r: 0.31764707, g: 0.5254902, b: 0.7137255, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -19019,7 +19059,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 847319875}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 327343390}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &847319875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25521,7 +25573,7 @@ MonoBehaviour:
   grenadeObject: {fileID: 6699801249491049196, guid: 787d6597276f4c748b8de1cc0d22dc4c, type: 3}
   followCamera: {fileID: 963194227}
   ammo: 100
-  coin: 0
+  coin: 4000
   health: 100
   maxAmmo: 999
   maxCoin: 99999
@@ -25621,7 +25673,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9d986f49ce6cd534192f14632e916df7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: be7633cc187ae604cb9808ff3c897195, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25710,7 +25762,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uCCB4 \uB825"
+  m_Text: "\uD574 \uBA38"
 --- !u!222 &1119781968
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26570,7 +26622,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1226235607}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 827595112}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1226235607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27284,7 +27348,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1388636887}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 827595112}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1388636887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27636,7 +27712,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1452681676}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 327343390}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1452681676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27903,7 +27991,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1,000
+  m_Text: 500
 --- !u!222 &1480842765
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -28048,7 +28136,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4e5b816343df5574c8a051077a2156b9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 744566287c3cef64f9b897280e5d9b1a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -34387,7 +34475,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC218\uB958\uD0C4"
+  m_Text: "\uC11C\uBE0C\uBA38\uC2E0\uAC74"
 --- !u!222 &1653147774
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -34482,7 +34570,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1654491965}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 327343390}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1654491965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40041,7 +40141,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1777276364}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 827595112}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1777276364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40166,7 +40278,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1795270202}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 327343390}
+        m_TargetAssemblyTypeName: Shop, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1795270202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40882,7 +41006,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f88cc66088c6e4042ae13a50dfbb3662, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3260f72e5b6eec24587b9132cb1ae0a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
