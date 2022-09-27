@@ -9,9 +9,13 @@ public class Enemy : MonoBehaviour
     public Type enemyType; // 적 타입을 저장할 변수
     public int maxHealth;
     public int curHealth;
+    public int score; // 적 점수
+    public GameManager manager;
+
     public Transform target;
     public BoxCollider meleeArea; // 콜라이더 담을 변수 추가
     public GameObject bullet; // C타입에서 사용할 오브젝트
+    public GameObject[] coins; // 동전
     public bool isChase; // 추적 결정
     public bool isAttack;
     public bool isDead;
@@ -191,6 +195,26 @@ public class Enemy : MonoBehaviour
             isChase = false;
             nav.enabled = false; // 사망 리액션을 유지하기 위해 NavAgent 비활성
             anim.SetTrigger("doDie");
+            Player player = target.GetComponent<Player>();
+            player.score += score;
+            int ranCoin = Random.Range(0, 3);
+            Instantiate(coins[ranCoin], transform.position, Quaternion.identity);
+
+            switch (enemyType)
+            {
+                case Type.A:
+                    manager.enemyCntA--;
+                    break;
+                case Type.B:
+                    manager.enemyCntB--;
+                    break;
+                case Type.C:
+                    manager.enemyCntC--;
+                    break;
+                case Type.D:
+                    manager.enemyCntD--;
+                    break;
+            }
 
             if (isGrenade)
             {
@@ -207,8 +231,8 @@ public class Enemy : MonoBehaviour
                 reactVec += Vector3.up;
                 rigid.AddForce(reactVec * 5, ForceMode.Impulse); // 넉백 구현
             }
-            
-            if (enemyType != Type.D) Destroy(gameObject, 4);
+
+            Destroy(gameObject, 4);
         }
     }
 }
